@@ -15,7 +15,7 @@ use std::collections::HashMap;
 use std::path::Path;
 use std::sync::{Arc, Mutex};
 use std::time::{Duration, Instant};
-use tauri::{AppHandle, Manager};
+use tauri::AppHandle;
 use tokio_util::sync::CancellationToken;
 use tracing::{error, info, warn};
 use once_cell::sync::Lazy;
@@ -436,8 +436,9 @@ impl SummaryService {
             100000  // Effectively unlimited for single-pass processing
         };
 
-        // Get app data directory for BuiltInAI provider
-        let app_data_dir = _app.path().app_data_dir().ok();
+        // Built-in AI models live in a stable shared library independent of
+        // the Tauri application identifier, so rebrands and upgrades reuse them.
+        let app_data_dir = crate::model_library::data_directory().ok();
 
         if let Some(code) = &summary_language {
             info!("📝 Summary language preference: {}", code);

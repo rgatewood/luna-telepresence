@@ -133,7 +133,7 @@ Generate meeting summaries with your choice of AI provider. **Ollama** (local) i
 
 ### 🔒 Privacy-First Design
 
-All data stays on your machine. Transcription models, recordings, and transcripts are stored locally.
+All data stays on your machine. Transcription models, recordings, and transcripts are stored locally. On Windows, downloaded models are kept in the shared `%LOCALAPPDATA%\Luna Telepresence Model Library\models` library so upgrades and compatible branded builds can reuse them without downloading or storing duplicate copies.
 
 <p align="center">
     <img src="docs/settings.png" width="650" style="border-radius: 10px;" alt="Local Transcription and storage" />

@@ -1,6 +1,6 @@
 [package]
 name = "luna-telepresence"
-version = "0.4.2"
+version = "0.4.3"
 description = "A co-brandable desktop meeting recorder, transcription, and notes application"
 authors = ["Zackriya Solutions", "Richard Gatewood"]
 license = "MIT"

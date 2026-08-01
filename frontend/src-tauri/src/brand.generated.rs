@@ -2,6 +2,7 @@
 pub const PRODUCT_NAME: &str = "Luna Telepresence";
 pub const SHORT_NAME: &str = "Luna";
 pub const DATA_DIRECTORY_NAME: &str = "Luna Telepresence";
+pub const MODEL_LIBRARY_DIRECTORY_NAME: &str = "Luna Telepresence Model Library";
 pub const RECORDINGS_DIRECTORY_NAME: &str = "Luna Telepresence Recordings";
 pub const WEBSITE_URL: &str = "https://github.com/rgatewood/luna-telepresence";
 pub const UPDATES_ENABLED: bool = false;

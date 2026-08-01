@@ -10,13 +10,11 @@ pub static PARAKEET_ENGINE: Mutex<Option<Arc<ParakeetEngine>>> = Mutex::new(None
 // Global models directory path (set during app initialization)
 static MODELS_DIR: Mutex<Option<PathBuf>> = Mutex::new(None);
 
-/// Initialize the models directory path using app_data_dir
+/// Initialize the models directory path using the shared model library.
 /// This should be called during app setup before parakeet_init
-pub fn set_models_directory<R: Runtime>(app: &AppHandle<R>) {
-    let app_data_dir = app.path().app_data_dir()
-        .expect("Failed to get app data dir");
-
-    let models_dir = app_data_dir.join("models");
+pub fn set_models_directory<R: Runtime>(_app: &AppHandle<R>) {
+    let models_dir = crate::model_library::models_directory()
+        .expect("Failed to get shared models directory");
 
     // Create directory if it doesn't exist
     if !models_dir.exists() {

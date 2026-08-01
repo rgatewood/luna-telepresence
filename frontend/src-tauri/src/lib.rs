@@ -45,6 +45,8 @@ pub mod database;
 pub mod notifications;
 pub mod ollama;
 pub mod onboarding;
+pub mod model_cache_migration;
+pub mod model_library;
 pub mod openai;
 pub mod anthropic;
 pub mod groq;
@@ -420,6 +422,42 @@ pub fn run() {
         .manage(summary::summary_engine::ModelManagerState(Arc::new(tokio::sync::Mutex::new(None))))
         .setup(|_app| {
             log::info!("Application setup complete");
+
+            // Reuse models downloaded by the upstream Meetily app after a rebrand.
+            // Hard links avoid a second multi-gigabyte copy when both app-data
+            // directories are on the same volume; copying is a safe fallback.
+            if let (Ok(app_data_dir), Ok(shared_models_dir)) =
+                (_app.path().app_data_dir(), model_library::models_directory())
+            {
+                let mut source_directories = Vec::new();
+                if let Some(legacy_models_dir) =
+                    model_cache_migration::legacy_models_directory(&app_data_dir)
+                {
+                    source_directories.push(legacy_models_dir);
+                }
+                source_directories.push(app_data_dir.join("models"));
+
+                for source_directory in source_directories {
+                    match model_cache_migration::migrate_legacy_models(
+                        &source_directory,
+                        &shared_models_dir,
+                    ) {
+                        Ok(report) if report.files_reused > 0 => log::info!(
+                            "Reused {} model files ({} bytes) from {} in shared library {}",
+                            report.files_reused,
+                            report.bytes_reused,
+                            source_directory.display(),
+                            shared_models_dir.display()
+                        ),
+                        Ok(_) => {}
+                        Err(error) => log::warn!(
+                            "Could not reuse model cache from {}: {}",
+                            source_directory.display(),
+                            error
+                        ),
+                    }
+                }
+            }
 
             // Initialize system tray
             if let Err(e) = tray::create_tray(_app.handle()) {

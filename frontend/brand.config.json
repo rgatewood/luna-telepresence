@@ -4,6 +4,7 @@
   "packageName": "luna-telepresence",
   "identifier": "com.luna.telepresence",
   "dataDirectoryName": "Luna Telepresence",
+  "modelLibraryDirectoryName": "Luna Telepresence Model Library",
   "recordingsDirectoryName": "Luna Telepresence Recordings",
   "tagline": "Capture conversations, transcribe them, and turn them into useful meeting notes.",
   "websiteUrl": "https://github.com/rgatewood/luna-telepresence",
