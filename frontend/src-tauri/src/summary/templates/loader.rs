@@ -223,11 +223,11 @@ mod tests {
 
     #[test]
     fn test_get_builtin_template() {
-        let template = get_template("daily_standup");
+        let template = get_template("general");
         assert!(template.is_ok());
 
         let template = template.unwrap();
-        assert_eq!(template.name, "Daily Standup");
+        assert_eq!(template.name, "General Meeting");
         assert!(!template.sections.is_empty());
     }
 
@@ -240,8 +240,9 @@ mod tests {
     #[test]
     fn test_list_template_ids() {
         let ids = list_template_ids();
-        assert!(ids.contains(&"daily_standup".to_string()));
-        assert!(ids.contains(&"standard_meeting".to_string()));
+        assert_eq!(ids.len(), 12);
+        assert!(ids.contains(&"general".to_string()));
+        assert!(ids.contains(&"candidate_interview".to_string()));
     }
 
     #[test]
