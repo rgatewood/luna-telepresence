@@ -1,0 +1,9 @@
+{
+  "name": "Verbatim Transcript",
+  "description": "Preserve a transcript-focused record with minimal summarization.",
+  "sections": [
+    {"title":"Transcript","instruction":"Reproduce the transcript in chronological order, retaining speaker labels and timestamps when available. Do not paraphrase.","format":"paragraph"},
+    {"title":"Uncertain or Inaudible Passages","instruction":"List uncertain, incomplete, or inaudible passages and their timestamps. Do not guess missing words.","format":"list"},
+    {"title":"Corrections","instruction":"List explicit corrections made during the conversation or supplied in transcript metadata.","format":"list"}
+  ]
+}

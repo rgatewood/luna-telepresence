@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
 use tauri::{AppHandle, Runtime};
 use tauri_plugin_store::StoreExt;
+use tauri_plugin_dialog::DialogExt;
 
 use anyhow::Result;
 #[cfg(target_os = "macos")]
@@ -43,36 +44,36 @@ impl Default for RecordingPreferences {
 pub fn get_default_recordings_folder() -> PathBuf {
     #[cfg(target_os = "windows")]
     {
-        // Windows: %USERPROFILE%\Music\meetily-recordings
+        // Windows: the user's Music directory
         if let Some(music_dir) = dirs::audio_dir() {
-            music_dir.join("meetily-recordings")
+            music_dir.join(crate::brand::RECORDINGS_DIRECTORY_NAME)
         } else {
             // Fallback to Documents if Music folder is not available
             dirs::document_dir()
                 .unwrap_or_else(|| PathBuf::from("."))
-                .join("meetily-recordings")
+                .join(crate::brand::RECORDINGS_DIRECTORY_NAME)
         }
     }
 
     #[cfg(target_os = "macos")]
     {
-        // macOS: ~/Movies/meetily-recordings
+        // macOS: the user's Movies directory
         if let Some(movies_dir) = dirs::video_dir() {
-            movies_dir.join("meetily-recordings")
+            movies_dir.join(crate::brand::RECORDINGS_DIRECTORY_NAME)
         } else {
             // Fallback to Documents if Movies folder is not available
             dirs::document_dir()
                 .unwrap_or_else(|| PathBuf::from("."))
-                .join("meetily-recordings")
+                .join(crate::brand::RECORDINGS_DIRECTORY_NAME)
         }
     }
 
     #[cfg(not(any(target_os = "windows", target_os = "macos")))]
     {
-        // Linux/Others: ~/Documents/meetily-recordings
+        // Linux/Others: the user's Documents directory
         dirs::document_dir()
             .unwrap_or_else(|| PathBuf::from("."))
-            .join("meetily-recordings")
+            .join(crate::brand::RECORDINGS_DIRECTORY_NAME)
     }
 }
 
@@ -245,13 +246,26 @@ pub async fn open_recordings_folder<R: Runtime>(app: AppHandle<R>) -> Result<(),
 
 #[tauri::command]
 pub async fn select_recording_folder<R: Runtime>(
-    _app: AppHandle<R>,
+    app: AppHandle<R>,
 ) -> Result<Option<String>, String> {
-    // Use Tauri's dialog to select folder
-    // For now, return None - this would need to be implemented with tauri-plugin-dialog
-    // when it's available in the Cargo.toml
-    warn!("Folder selection not yet implemented - using dialog plugin");
-    Ok(None)
+    let selected = app.dialog().file().blocking_pick_folder();
+    let Some(path) = selected else {
+        return Ok(None);
+    };
+
+    let selected_path = PathBuf::from(path.to_string());
+    ensure_recordings_directory(&selected_path)
+        .map_err(|e| format!("Failed to create selected recordings directory: {}", e))?;
+
+    let mut preferences = load_recording_preferences(&app)
+        .await
+        .map_err(|e| format!("Failed to load recording preferences: {}", e))?;
+    preferences.save_folder = selected_path;
+    save_recording_preferences(&app, &preferences)
+        .await
+        .map_err(|e| format!("Failed to save selected recordings directory: {}", e))?;
+
+    Ok(Some(preferences.save_folder.to_string_lossy().to_string()))
 }
 
 // Backend selection commands

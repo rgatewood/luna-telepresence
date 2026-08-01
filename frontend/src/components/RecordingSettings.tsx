@@ -104,6 +104,20 @@ export function RecordingSettings({ onSave }: RecordingSettingsProps) {
     }
   };
 
+  const handleChooseFolder = async () => {
+    try {
+      const selected = await invoke<string | null>('select_recording_folder');
+      if (!selected) return;
+      const newPreferences = { ...preferences, save_folder: selected };
+      setPreferences(newPreferences);
+      onSave?.(newPreferences);
+      toast.success('Recording location updated');
+    } catch (error) {
+      console.error('Failed to choose recordings folder:', error);
+      toast.error('Failed to update recording location');
+    }
+  };
+
   const handleNotificationToggle = async (enabled: boolean) => {
     try {
       setShowRecordingNotification(enabled);
@@ -184,13 +198,22 @@ export function RecordingSettings({ onSave }: RecordingSettingsProps) {
             <div className="text-sm text-gray-600 mb-3 break-all">
               {preferences.save_folder || 'Default folder'}
             </div>
-            <button
-              onClick={handleOpenFolder}
-              className="flex items-center gap-2 px-3 py-2 text-sm border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
-            >
-              <FolderOpen className="w-4 h-4" />
-              Open Folder
-            </button>
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={handleChooseFolder}
+                className="flex items-center gap-2 px-3 py-2 text-sm border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+              >
+                <FolderOpen className="w-4 h-4" />
+                Choose Folder
+              </button>
+              <button
+                onClick={handleOpenFolder}
+                className="flex items-center gap-2 px-3 py-2 text-sm border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+              >
+                <FolderOpen className="w-4 h-4" />
+                Open Folder
+              </button>
+            </div>
           </div>
 
           <div className="p-4 border rounded-lg bg-blue-50">

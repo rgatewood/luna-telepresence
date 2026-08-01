@@ -1,0 +1,1 @@
+include!("brand.generated.rs");

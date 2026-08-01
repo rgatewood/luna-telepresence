@@ -1,0 +1,12 @@
+{
+  "name": "Requirements Elicitation",
+  "description": "Turn discovery conversations into clear, testable requirements and open questions.",
+  "sections": [
+    {"title":"Desired Outcomes","instruction":"Describe the business need, users, and outcomes in the speakers' terms.","format":"paragraph"},
+    {"title":"Current State and Pain Points","instruction":"Summarize the existing process, constraints, and pain points.","format":"list"},
+    {"title":"Requirements","instruction":"List functional, nonfunctional, data, and business-rule requirements. Preserve stated priority or acceptance detail.","format":"list","item_format":"| Requirement | Type | Priority or Evidence |\n| --- | --- | --- |"},
+    {"title":"Constraints and Dependencies","instruction":"List constraints, assumptions, integrations, dependencies, and exceptions.","format":"list"},
+    {"title":"Unresolved Questions","instruction":"List gaps that require clarification or confirmation.","format":"list"},
+    {"title":"Actions","instruction":"List owners and next steps without inventing assignments.","format":"list"}
+  ]
+}

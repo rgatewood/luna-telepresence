@@ -1,0 +1,12 @@
+{
+  "name": "Solicitation Intake",
+  "description": "Structure an RFP, RFI, or formal solicitation intake discussion.",
+  "sections": [
+    {"title":"Objectives and Scope","instruction":"Summarize the buyer's objectives, requested scope, and deliverables discussed.","format":"paragraph"},
+    {"title":"Dates and Instructions","instruction":"List submission dates, milestones, format instructions, and process requirements mentioned.","format":"list"},
+    {"title":"Evaluation and Compliance","instruction":"List evaluation factors, mandatory requirements, and compliance items.","format":"list"},
+    {"title":"Questions and Gaps","instruction":"List clarification questions, missing source material, and unresolved interpretations.","format":"list"},
+    {"title":"Dependencies and Risks","instruction":"List dependencies, risks, and constraints affecting the response.","format":"list"},
+    {"title":"Owners and Actions","instruction":"List response actions with owners and dates when stated.","format":"list","item_format":"| Owner | Action | Due |\n| --- | --- | --- |"}
+  ]
+}

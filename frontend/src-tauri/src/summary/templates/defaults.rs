@@ -1,42 +1,30 @@
-/// Embedded default templates using compile-time inclusion
-///
-/// These templates are bundled into the binary and serve as fallbacks
-/// when custom templates are not available.
+/// Embedded default templates using compile-time inclusion.
 
-/// Daily standup template for engineering/product teams
-pub const DAILY_STANDUP: &str = include_str!("../../../templates/daily_standup.json");
+const TEMPLATES: &[(&str, &str)] = &[
+    ("general", include_str!("../../../templates/general.json")),
+    ("requirements", include_str!("../../../templates/requirements.json")),
+    ("proposal_opportunity_intake", include_str!("../../../templates/proposal_opportunity_intake.json")),
+    ("solicitation_intake", include_str!("../../../templates/solicitation_intake.json")),
+    ("proposal_presentation", include_str!("../../../templates/proposal_presentation.json")),
+    ("candidate_interview", include_str!("../../../templates/candidate_interview.json")),
+    ("verbatim", include_str!("../../../templates/verbatim.json")),
+    ("status", include_str!("../../../templates/status.json")),
+    ("internal_one_to_one", include_str!("../../../templates/internal_one_to_one.json")),
+    ("client_stakeholder_one_to_one", include_str!("../../../templates/client_stakeholder_one_to_one.json")),
+    ("agenda_led_workshop_or_interview", include_str!("../../../templates/agenda_led_workshop_or_interview.json")),
+    ("capabilities_introduction_call", include_str!("../../../templates/capabilities_introduction_call.json")),
+];
 
-/// Standard meeting notes template
-pub const STANDARD_MEETING: &str = include_str!("../../../templates/standard_meeting.json");
-
-/// Registry of all built-in templates
-///
-/// Maps template identifiers to their embedded JSON content
 pub fn get_builtin_templates() -> Vec<(&'static str, &'static str)> {
-    vec![
-        ("daily_standup", DAILY_STANDUP),
-        ("standard_meeting", STANDARD_MEETING),
-    ]
+    TEMPLATES.to_vec()
 }
 
-/// Get a built-in template by identifier
-///
-/// # Arguments
-/// * `id` - Template identifier (e.g., "daily_standup", "standard_meeting")
-///
-/// # Returns
-/// The template JSON content if found, None otherwise
 pub fn get_builtin_template(id: &str) -> Option<&'static str> {
-    match id {
-        "daily_standup" => Some(DAILY_STANDUP),
-        "standard_meeting" => Some(STANDARD_MEETING),
-        _ => None,
-    }
+    TEMPLATES.iter().find(|(key, _)| *key == id).map(|(_, value)| *value)
 }
 
-/// List all built-in template identifiers
 pub fn list_builtin_template_ids() -> Vec<&'static str> {
-    vec!["daily_standup", "standard_meeting"]
+    TEMPLATES.iter().map(|(key, _)| *key).collect()
 }
 
 #[cfg(test)]
@@ -44,22 +32,18 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_builtin_templates_valid_json() {
+    fn all_twelve_builtin_templates_are_valid_json() {
+        assert_eq!(TEMPLATES.len(), 12);
         for (id, content) in get_builtin_templates() {
-            let result = serde_json::from_str::<serde_json::Value>(content);
-            assert!(
-                result.is_ok(),
-                "Built-in template '{}' contains invalid JSON: {:?}",
-                id,
-                result.err()
-            );
+            assert!(serde_json::from_str::<serde_json::Value>(content).is_ok(), "invalid template: {id}");
         }
     }
 
     #[test]
-    fn test_get_builtin_template() {
-        assert!(get_builtin_template("daily_standup").is_some());
-        assert!(get_builtin_template("standard_meeting").is_some());
+    fn builtins_are_addressable_by_id() {
+        for id in list_builtin_template_ids() {
+            assert!(get_builtin_template(id).is_some());
+        }
         assert!(get_builtin_template("nonexistent").is_none());
     }
 }

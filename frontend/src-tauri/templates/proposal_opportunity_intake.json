@@ -1,0 +1,12 @@
+{
+  "name": "Proposal or Opportunity Intake",
+  "description": "Capture the client situation, opportunity, win strategy, and proposal work required.",
+  "sections": [
+    {"title":"Client Situation and Opportunity","instruction":"Summarize the client context, opportunity, desired outcomes, and known scope.","format":"paragraph"},
+    {"title":"Stakeholders and Timing","instruction":"List stakeholders, decision roles, dates, and commercial statements that were actually discussed.","format":"list"},
+    {"title":"Win Themes and Differentiators","instruction":"Capture proposed win themes, competitive context, and differentiators as hypotheses unless confirmed.","format":"list"},
+    {"title":"Solution and Proof Needs","instruction":"List solution ideas, relevant proof points, references, demos, or credentials needed.","format":"list"},
+    {"title":"Gaps and Risks","instruction":"List missing inputs, qualification questions, dependencies, and risks.","format":"list"},
+    {"title":"Actions","instruction":"List proposal actions with owners and dates when stated.","format":"list","item_format":"| Owner | Action | Due |\n| --- | --- | --- |"}
+  ]
+}

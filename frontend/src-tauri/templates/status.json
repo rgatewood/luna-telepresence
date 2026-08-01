@@ -1,0 +1,12 @@
+{
+  "name": "Status Meeting",
+  "description": "Concise project or program status with variance, risks, decisions, and look-ahead.",
+  "sections": [
+    {"title":"Executive Status","instruction":"Summarize current status, progress, and the most important change since the prior update.","format":"paragraph"},
+    {"title":"Milestones and Variances","instruction":"List milestones, dates, progress, and schedule or scope variances.","format":"list"},
+    {"title":"Issues, Risks, and Dependencies","instruction":"List active issues, risks, assumptions, dependencies, and escalations.","format":"list"},
+    {"title":"Decisions","instruction":"List decisions made or needed.","format":"list"},
+    {"title":"Actions","instruction":"List actions with owners and due dates when stated.","format":"list","item_format":"| Owner | Action | Due |\n| --- | --- | --- |"},
+    {"title":"Look-ahead and Parking Lot","instruction":"List upcoming work and deferred topics.","format":"list"}
+  ]
+}

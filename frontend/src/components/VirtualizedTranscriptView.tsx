@@ -9,6 +9,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { RecordingStatusBar } from "./RecordingStatusBar";
 import { motion, AnimatePresence } from "framer-motion";
 import { TranscriptSegmentData } from "@/types";
+import { brand } from "@/config/brand";
 
 export interface VirtualizedTranscriptViewProps {
     /** Transcript segments to display */
@@ -257,7 +258,7 @@ export const VirtualizedTranscriptView: React.FC<VirtualizedTranscriptViewProps>
                         </>
                     ) : (
                         <>
-                            <p className="text-lg font-semibold">Welcome to meetily!</p>
+                            <p className="text-lg font-semibold">Welcome to {brand.productName}!</p>
                             <p className="text-xs mt-1">Start recording to see live transcription</p>
                         </>
                     )}

@@ -1,0 +1,12 @@
+{
+  "name": "Candidate Interview",
+  "description": "Organize interview evidence without making an automated hiring decision.",
+  "sections": [
+    {"title":"Questions and Evidence","instruction":"Summarize each substantive question and the candidate's evidence-based response.","format":"list","item_format":"| Topic or Question | Evidence from Response |\n| --- | --- |"},
+    {"title":"Examples and Follow-up Probes","instruction":"List concrete examples, results, and follow-up probes discussed.","format":"list"},
+    {"title":"Role-Criteria Evidence","instruction":"Map only observed evidence to role criteria mentioned by interviewers. Do not score or infer protected traits.","format":"list"},
+    {"title":"Candidate Questions","instruction":"List questions asked by the candidate and answers provided.","format":"list"},
+    {"title":"Missing Evidence","instruction":"List areas not covered or requiring a follow-up conversation.","format":"list"},
+    {"title":"Logistics and Follow-ups","instruction":"Capture availability, stated constraints, process steps, and owners.","format":"list"}
+  ]
+}

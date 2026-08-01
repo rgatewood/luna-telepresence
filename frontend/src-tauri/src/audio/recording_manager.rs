@@ -1,5 +1,6 @@
 use std::sync::Arc;
 use tokio::sync::mpsc;
+use std::path::PathBuf;
 use anyhow::Result;
 use log::{debug, error, info, warn};
 
@@ -50,6 +51,10 @@ impl RecordingManager {
             device_monitor: Some(device_monitor),
             device_event_receiver: Some(device_event_receiver),
         }
+    }
+
+    pub fn set_recordings_folder(&mut self, path: PathBuf) {
+        self.recording_saver.set_base_folder(path);
     }
 
     // Remove app handle storage for now - will be passed directly when saving

@@ -1,0 +1,12 @@
+{
+  "name": "Agenda-Led Workshop or Interview",
+  "description": "Map a facilitated session to agenda items, contributions, decisions, and unresolved areas.",
+  "sections": [
+    {"title":"Agenda Coverage","instruction":"List agenda items covered, skipped, or deferred.","format":"list"},
+    {"title":"Question and Response Map","instruction":"Capture major questions and the responses or contributions offered.","format":"list","item_format":"| Question or Topic | Response or Contribution |\n| --- | --- |"},
+    {"title":"Themes and Ideas","instruction":"Summarize recurring themes, requirements, and ideas.","format":"list"},
+    {"title":"Convergence and Divergence","instruction":"Identify points of agreement, disagreement, minority views, explicit votes, or conflicts without forcing consensus.","format":"list"},
+    {"title":"Decisions and Open Questions","instruction":"List decisions, parking-lot items, and unresolved questions.","format":"list"},
+    {"title":"Actions and Confirmations","instruction":"List actions, owners, dates, and items requiring confirmation.","format":"list"}
+  ]
+}

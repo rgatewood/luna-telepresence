@@ -1,10 +1,10 @@
 [package]
-name = "meetily"
+name = "luna-telepresence"
 version = "0.4.0"
-description = "A Tauri App for meeting minutes"
-authors = ["Sujith S"]
+description = "A co-brandable desktop meeting recorder, transcription, and notes application"
+authors = ["Zackriya Solutions", "Richard Gatewood"]
 license = "MIT"
-repository = "https://github.com/Zackriya-Solutions/meeting-minutes"
+repository = "https://github.com/rgatewood/luna-telepresence"
 edition = "2021"
 rust-version = "1.77"
 

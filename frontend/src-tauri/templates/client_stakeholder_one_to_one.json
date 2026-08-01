@@ -1,0 +1,12 @@
+{
+  "name": "Client Stakeholder One-to-One",
+  "description": "Capture stakeholder priorities, concerns, commitments, and a shareable recap.",
+  "sections": [
+    {"title":"Priorities and Context","instruction":"Summarize the stakeholder's stated priorities, desired outcomes, and relevant context.","format":"paragraph"},
+    {"title":"Concerns and Questions","instruction":"List concerns, objections, questions, and unanswered items.","format":"list"},
+    {"title":"Decisions and Mutual Commitments","instruction":"List decisions and commitments made by either party.","format":"list"},
+    {"title":"Risks and Next Steps","instruction":"List risks, dependencies, owners, and next steps.","format":"list"},
+    {"title":"Shareable Recap","instruction":"Draft a concise factual recap suitable to send to the stakeholder. Do not include inferred relationship sentiment.","format":"paragraph"},
+    {"title":"Internal Interpretation","instruction":"Separately list internal hypotheses or relationship signals, clearly labeled as interpretations rather than facts.","format":"list"}
+  ]
+}

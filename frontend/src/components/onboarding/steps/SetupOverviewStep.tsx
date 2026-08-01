@@ -3,6 +3,7 @@ import { Info } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { OnboardingContainer } from '../OnboardingContainer';
 import { useOnboarding } from '@/contexts/OnboardingContext';
+import { brand } from '@/config/brand';
 import {
   Tooltip,
   TooltipContent,
@@ -46,7 +47,7 @@ export function SetupOverviewStep() {
   return (
     <OnboardingContainer
       title="Setup Overview"
-      description="Meetily requires that you download the Transcription & Summarization AI models for the software to work."
+      description={`${brand.productName} requires a transcription model. Summaries can use a local model or a configured cloud provider.`}
       step={2}
       totalSteps={isMac ? 4 : 3}
     >

@@ -1,0 +1,12 @@
+{
+  "name": "Proposal Presentation",
+  "description": "Capture presentation coverage, audience reactions, questions, and follow-up commitments.",
+  "sections": [
+    {"title":"Storyline and Coverage","instruction":"Summarize the presentation storyline, capabilities, evaluation factors, and proof offered.","format":"paragraph"},
+    {"title":"Questions and Answers","instruction":"List audience questions and the answers given. Mark unanswered questions.","format":"list"},
+    {"title":"Objections and Feedback","instruction":"List objections, feedback, concerns, and observable reactions without inferring sentiment.","format":"list"},
+    {"title":"Commitments","instruction":"List commitments made by either side and any written confirmation needed.","format":"list"},
+    {"title":"Content Gaps","instruction":"List missing proof, unclear responses, or material to strengthen.","format":"list"},
+    {"title":"Follow-up Actions","instruction":"List owners, actions, and dates when stated.","format":"list","item_format":"| Owner | Action | Due |\n| --- | --- | --- |"}
+  ]
+}

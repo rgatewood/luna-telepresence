@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { invoke } from '@tauri-apps/api/core';
 import { getVersion } from '@tauri-apps/api/app';
-import Image from 'next/image';
 import AnalyticsConsentSwitch from "./AnalyticsConsentSwitch";
 import { UpdateDialog } from "./UpdateDialog";
 import { updateService, UpdateInfo } from '@/services/updateService';
 import { Button } from './ui/button';
 import { Loader2, CheckCircle2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { brand } from '@/config/brand';
 
 
 export function About() {
@@ -23,7 +23,7 @@ export function About() {
 
     const handleContactClick = async () => {
         try {
-            await invoke('open_external_url', { url: 'https://meetily.zackriya.com/#about' });
+            await invoke('open_external_url', { url: brand.websiteUrl });
         } catch (error) {
             console.error('Failed to open link:', error);
         }
@@ -52,20 +52,16 @@ export function About() {
             {/* Compact Header */}
             <div className="text-center">
                 <div className="mb-3">
-                    <Image
-                        src="icon_128x128.png"
-                        alt="Meetily Logo"
-                        width={64}
-                        height={64}
-                        className="mx-auto"
-                    />
+                    <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-slate-900 text-2xl font-semibold text-white">
+                        {brand.shortName.slice(0, 1)}
+                    </div>
                 </div>
-                {/* <h1 className="text-xl font-bold text-gray-900">Meetily</h1> */}
+                <h1 className="text-xl font-bold text-gray-900">{brand.productName}</h1>
                 <span className="text-sm text-gray-500"> v{currentVersion}</span>
                 <p className="text-medium text-gray-600 mt-1">
-                    Real-time notes and summaries that never leave your machine.
+                    {brand.tagline}
                 </p>
-                <div className="mt-3">
+                {brand.updates.enabled && <div className="mt-3">
                     <Button
                         onClick={handleCheckForUpdates}
                         disabled={isChecking}
@@ -90,12 +86,12 @@ export function About() {
                             Update available: v{updateInfo.version}
                         </div>
                     )}
-                </div>
+                </div>}
             </div>
 
             {/* Features Grid - Compact */}
             <div className="space-y-3">
-                <h2 className="text-base font-semibold text-gray-800">What makes Meetily different</h2>
+                <h2 className="text-base font-semibold text-gray-800">What makes {brand.shortName} useful</h2>
                 <div className="grid grid-cols-2 gap-2">
                     <div className="bg-gray-50 rounded p-3 hover:bg-gray-100 transition-colors">
                         <h3 className="font-bold text-sm text-gray-900 mb-1">Privacy-first</h3>
@@ -133,14 +129,14 @@ export function About() {
                     onClick={handleContactClick}
                     className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded transition-colors duration-200 shadow-sm hover:shadow-md"
                 >
-                    Chat with the Zackriya team
+                    Project website
                 </button>
             </div>
 
             {/* Footer - Compact */}
             <div className="pt-2 border-t border-gray-200 text-center">
                 <p className="text-xs text-gray-400">
-                    Built by Zackriya Solutions
+                    {brand.productName} is based on the MIT-licensed Meetily project.
                 </p>
             </div>
             <AnalyticsConsentSwitch />

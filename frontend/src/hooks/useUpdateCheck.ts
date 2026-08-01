@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { updateService, UpdateInfo } from '@/services/updateService';
 import { showUpdateNotification } from '@/components/UpdateNotification';
+import { brand } from '@/config/brand';
 
 interface UseUpdateCheckOptions {
   checkOnMount?: boolean;
@@ -19,6 +20,7 @@ export function useUpdateCheck(options: UseUpdateCheckOptions = {}) {
   const [isChecking, setIsChecking] = useState(false);
 
   const checkForUpdates = async (force = false) => {
+    if (!brand.updates.enabled) return;
     // Skip if checked recently (unless forced)
     if (!force && updateService.wasCheckedRecently()) {
       return;
@@ -47,7 +49,7 @@ export function useUpdateCheck(options: UseUpdateCheckOptions = {}) {
   };
 
   useEffect(() => {
-    if (checkOnMount) {
+    if (checkOnMount && brand.updates.enabled) {
       // Delay the check slightly to avoid blocking app startup
       const timer = setTimeout(() => {
         checkForUpdates(false);

@@ -6,6 +6,7 @@ import { ConfidenceIndicator } from './ConfidenceIndicator';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 import { RecordingStatusBar } from './RecordingStatusBar';
 import { motion, AnimatePresence } from 'framer-motion';
+import { brand } from '@/config/brand';
 
 interface TranscriptViewProps {
   transcripts: Transcript[];
@@ -370,7 +371,7 @@ export const TranscriptView: React.FC<TranscriptViewProps> = ({ transcripts, isR
             </>
           ) : (
             <>
-              <p className="text-lg font-semibold">Welcome to meetily!</p>
+              <p className="text-lg font-semibold">Welcome to {brand.productName}!</p>
               <p className="text-xs mt-1">Start recording to see live transcription</p>
             </>
           )}

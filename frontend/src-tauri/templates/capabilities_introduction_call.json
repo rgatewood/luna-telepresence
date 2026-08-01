@@ -1,0 +1,12 @@
+{
+  "name": "Capabilities Introduction Call",
+  "description": "Capture what was presented, what the client needs, and where a follow-up may create value.",
+  "sections": [
+    {"title":"Client Context and Needs","instruction":"Summarize the client's situation, priorities, needs, and constraints.","format":"paragraph"},
+    {"title":"Capabilities and Proof Presented","instruction":"List capabilities, examples, credentials, and proof claims presented.","format":"list"},
+    {"title":"Questions and Objections","instruction":"List client questions, objections, responses, and unanswered questions.","format":"list"},
+    {"title":"Potential Fit","instruction":"List fit hypotheses and interest signals, clearly distinguishing explicit statements from interpretation.","format":"list"},
+    {"title":"Requested Materials","instruction":"List materials, examples, or introductions requested.","format":"list"},
+    {"title":"Next Steps","instruction":"List agreed next steps with owners and dates when stated.","format":"list"}
+  ]
+}

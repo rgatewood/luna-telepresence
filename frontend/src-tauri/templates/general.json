@@ -1,0 +1,12 @@
+{
+  "name": "General Meeting",
+  "description": "Flexible notes for a meeting that does not need a specialized format.",
+  "sections": [
+    {"title":"Purpose and Attendees","instruction":"State the purpose and list participants mentioned in the transcript.","format":"paragraph"},
+    {"title":"Summary","instruction":"Summarize the discussion and most important context in concise language.","format":"paragraph"},
+    {"title":"Decisions","instruction":"List decisions that were explicitly made. Say none if no decision was made.","format":"list"},
+    {"title":"Action Items","instruction":"List each commitment with owner and due date when stated. Do not invent either.","format":"list","item_format":"| Owner | Action | Due |\n| --- | --- | --- |"},
+    {"title":"Open Questions and Risks","instruction":"List unresolved questions, risks, issues, or dependencies.","format":"list"},
+    {"title":"Next Steps","instruction":"List agreed next steps and follow-up meetings.","format":"list"}
+  ]
+}

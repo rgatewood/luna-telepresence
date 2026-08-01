@@ -1,50 +1,18 @@
-<div align="center" style="border-bottom: none">
-    <h1>
-        <img src="docs/Meetily-6.png" style="border-radius: 10px;" />
-        <br>
-        Privacy-First AI Meeting Assistant
-    </h1>
-    <a href="https://trendshift.io/repositories/21958" target="_blank"><img src="https://trendshift.io/api/badge/repositories/21958" alt="Zackriya-Solutions%2Fmeetily | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
-    <br>
-    <br>
-    <a href="https://github.com/Zackriya-Solutions/meeting-minutes/releases/"><img src="https://img.shields.io/badge/Pre_Release-Link-brightgreen" alt="Pre-Release"></a>
-    <a href="https://github.com/Zackriya-Solutions/meeting-minutes/releases"><img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/zackriya-solutions/meeting-minutes?style=flat">
-</a>
- <a href="https://github.com/Zackriya-Solutions/meeting-minutes/releases"> <img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/zackriya-solutions/meeting-minutes/total?style=plastic"> </a>
-    <a href="https://github.com/Zackriya-Solutions/meeting-minutes/releases"><img src="https://img.shields.io/badge/License-MIT-blue" alt="License"></a>
-    <a href="https://github.com/Zackriya-Solutions/meeting-minutes/releases"><img src="https://img.shields.io/badge/Supported_OS-macOS,_Windows-white" alt="Supported OS"></a>
-    <a href="https://github.com/Zackriya-Solutions/meeting-minutes/releases"><img alt="GitHub Tag" src="https://img.shields.io/github/v/tag/zackriya-solutions/meeting-minutes?include_prereleases&color=yellow">
-</a>
-    <br>
-    <h3>
-    <br>
-    Open Source • Privacy-First • Enterprise-Ready
-    </h3>
-    <p align="center">
-    Get latest <a href="https://www.zackriya.com/meetily-subscribe/"><b>Product updates</b></a> <br><br>
-    <a href="https://meetily.ai"><b>Website</b></a> •
-    <a href="https://www.linkedin.com/company/106363062/"><b>LinkedIn</b></a> •
-    <a href="https://discord.gg/crRymMQBFH"><b>Meetily Discord</b></a> •
-    <a href="https://discord.com/invite/vCFJvN4BwJ"><b>Privacy-First AI</b></a> •
-    <a href="https://www.reddit.com/r/meetily/"><b>Reddit</b></a>
-</p>
-    <p align="center">
+# Luna Telepresence
 
-A privacy-first AI meeting assistant that captures, transcribes, and summarizes meetings entirely on your infrastructure. Built by expert AI engineers passionate about data sovereignty and open source solutions. Perfect for enterprises that need advanced meeting intelligence without compromising on privacy, compliance, or control.
+Luna Telepresence is a co-brandable desktop meeting recorder and notes application. It captures microphone and system audio without joining the meeting as a bot, stores the recording and transcript locally, and can generate structured notes with either local models or configured cloud providers.
 
-</p>
+This repository is an MIT-licensed fork of [Zackriya Solutions' Meetily](https://github.com/Zackriya-Solutions/meetily). The original copyright and license are preserved in [LICENSE.md](LICENSE.md).
 
-<p align="center">
-    <img src="docs/meetily_demo.gif" width="650" alt="Meetily Demo" />
-    <br>
-    <a href="https://youtu.be/6FnhSC_eSz8">View full Demo Video</a>
-</p>
+## Luna additions
 
-</div>
+- One-file product branding through `frontend/brand.config.json`
+- Twelve practical meeting-note templates
+- User-selectable recording destination that the recording pipeline actually uses
+- Existing OpenAI, Anthropic, Groq, OpenRouter, Ollama, built-in, and custom OpenAI-compatible provider support
+- Upstream auto-updates disabled until this fork has its own signed release channel
 
----
-
-> **Meetily PRO Upgrade Offer** - Meetily PRO is available for users who need enhanced accuracy, advanced exports, custom summary workflows, and team-ready features. Use coupon code **LAUNCH20** for **20% off** until the next Meetily Community Edition release. Speaker diarization is also planned for PRO in mid-June. [Explore Meetily PRO →](https://meetily.ai/pro/)
+See [BRANDING.md](BRANDING.md) to create another branded build.
 
 ---
 

@@ -1,0 +1,12 @@
+{
+  "name": "Internal One-to-One",
+  "description": "Manager and employee notes centered on the employee's agenda, support, and commitments.",
+  "sections": [
+    {"title":"Employee-Led Topics","instruction":"Summarize the topics and context raised by the employee.","format":"paragraph"},
+    {"title":"Goals and Progress","instruction":"List goals, progress, accomplishments, and observable feedback discussed.","format":"list"},
+    {"title":"Blockers and Support","instruction":"List blockers and support requested or offered.","format":"list"},
+    {"title":"Development Topics","instruction":"Capture development interests and opportunities explicitly discussed.","format":"list"},
+    {"title":"Decisions and Commitments","instruction":"List mutual commitments, owners, and timing when stated.","format":"list"},
+    {"title":"Follow-ups","instruction":"List follow-up topics and actions. Exclude content explicitly marked off the shared record.","format":"list"}
+  ]
+}
