@@ -43,8 +43,12 @@ if (config.updates?.enabled) {
     endpoints: [config.updates.endpoint],
   };
   tauri.app.security.capabilities[0].permissions.push('updater:default');
-} else if (tauri.plugins) {
-  delete tauri.plugins.updater;
+} else {
+  tauri.plugins = tauri.plugins ?? {};
+  tauri.plugins.updater = {
+    pubkey: '',
+    endpoints: [],
+  };
 }
 fs.writeFileSync(tauriPath, `${JSON.stringify(tauri, null, 4)}\n`);
 

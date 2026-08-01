@@ -14,7 +14,7 @@ $CargoBin = Join-Path $env:USERPROFILE '.cargo\bin'
 $LlvmBin = 'C:\Program Files\LLVM\bin'
 $CmakeBin = 'C:\Program Files\CMake\bin'
 $TargetTriple = 'x86_64-pc-windows-msvc'
-$TauriConfig = Get-Content (Join-Path $FrontendRoot 'src-tauri\tauri.conf.json') -Raw | ConvertFrom-Json
+$TauriConfigPath = Join-Path $FrontendRoot 'src-tauri\tauri.conf.json'
 
 function Invoke-Checked {
     param(
@@ -63,15 +63,24 @@ if ($rustHost -ne $TargetTriple) {
     throw "Expected Rust host $TargetTriple but found $rustHost"
 }
 
-Write-Host "Building $($TauriConfig.productName) $($TauriConfig.version) ($Mode)" -ForegroundColor Cyan
-Write-Host "Repository: $RepoRoot"
-Write-Host "LLVM: $clangVersion"
-
 if (-not $SkipDependencyInstall) {
     Invoke-Checked -Command 'pnpm' -Arguments @('install', '--frozen-lockfile') -WorkingDirectory $FrontendRoot
 }
 
 Invoke-Checked -Command 'pnpm' -Arguments @('brand:apply') -WorkingDirectory $FrontendRoot
+
+$TauriConfig = Get-Content $TauriConfigPath -Raw | ConvertFrom-Json
+if ($null -eq $TauriConfig.plugins.updater) {
+    throw "Post-brand tauri.conf.json must define plugins.updater because the Rust application registers tauri-plugin-updater."
+}
+
+if ($null -eq $TauriConfig.plugins.updater.pubkey) {
+    throw "Post-brand tauri.conf.json plugins.updater must define pubkey (an empty value is valid while updates are disabled)."
+}
+
+Write-Host "Building $($TauriConfig.productName) $($TauriConfig.version) ($Mode)" -ForegroundColor Cyan
+Write-Host "Repository: $RepoRoot"
+Write-Host "LLVM: $clangVersion"
 
 if (-not $SkipChecks) {
     Invoke-Checked -Command 'pnpm' -Arguments @('exec', 'tsc', '--noEmit') -WorkingDirectory $FrontendRoot

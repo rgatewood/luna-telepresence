@@ -1,7 +1,7 @@
 {
     "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
     "productName": "Luna Telepresence",
-    "version": "0.4.1",
+    "version": "0.4.2",
     "identifier": "com.luna.telepresence",
     "build": {
         "frontendDist": "../out",
@@ -109,5 +109,10 @@
             "signCommand": "powershell -ExecutionPolicy Bypass -File scripts/sign-windows.ps1 -FilePath %1"
         }
     },
-    "plugins": {}
+    "plugins": {
+        "updater": {
+            "pubkey": "",
+            "endpoints": []
+        }
+    }
 }
