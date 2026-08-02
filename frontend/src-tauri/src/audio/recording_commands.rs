@@ -230,6 +230,7 @@ pub async fn start_recording_with_meeting_name<R: Runtime>(
     // Set up error callback
     let app_for_error = app.clone();
     manager.set_error_callback(move |error| {
+        error!("Recording pipeline error: {:?} ({})", error, error.user_message());
         let _ = app_for_error.emit("recording-error", error.user_message());
     });
 
@@ -402,6 +403,7 @@ pub async fn start_recording_with_devices_and_meeting<R: Runtime>(
     // Set up error callback
     let app_for_error = app.clone();
     manager.set_error_callback(move |error| {
+        error!("Recording pipeline error: {:?} ({})", error, error.user_message());
         let _ = app_for_error.emit("recording-error", error.user_message());
     });
 

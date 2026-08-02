@@ -84,7 +84,7 @@ export const RecordingControls: React.FC<RecordingControlsProps> = ({
   }, []);
 
   const handleStartRecording = useCallback(async () => {
-    if (isStarting || isValidatingModel) return;
+    if (isRecording || isStarting || isValidatingModel) return;
     console.log('Starting recording...');
     console.log('Selected devices:', selectedDevices);
     console.log('Meeting name:', meetingName);
@@ -131,7 +131,7 @@ export const RecordingControls: React.FC<RecordingControlsProps> = ({
       } else {
         setDeviceError({
           title: 'Recording Failed',
-          message: 'Unable to start recording. Please check your audio device settings and try again.'
+          message: errorMsg || 'Unable to start recording. Please try again.'
         });
       }
     }

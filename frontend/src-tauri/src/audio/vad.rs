@@ -4,6 +4,12 @@ use log::{debug, info, warn};
 use std::collections::VecDeque;
 use std::time::Duration;
 
+// Far-field meeting audio is often quieter and less speech-dominant than a
+// close microphone. Preserve it for transcription instead of requiring the
+// stricter Silero defaults that produced long gaps in otherwise audible audio.
+const LIVE_POSITIVE_SPEECH_THRESHOLD: f32 = 0.35;
+const LIVE_NEGATIVE_SPEECH_THRESHOLD: f32 = 0.20;
+
 /// Represents a complete speech segment detected by VAD
 #[derive(Debug, Clone)]
 pub struct SpeechSegment {
@@ -30,6 +36,20 @@ pub struct ContinuousVadProcessor {
 
 impl ContinuousVadProcessor {
     pub fn new(input_sample_rate: u32, redemption_time_ms: u32) -> Result<Self> {
+        Self::new_with_thresholds(
+            input_sample_rate,
+            redemption_time_ms,
+            LIVE_POSITIVE_SPEECH_THRESHOLD,
+            LIVE_NEGATIVE_SPEECH_THRESHOLD,
+        )
+    }
+
+    fn new_with_thresholds(
+        input_sample_rate: u32,
+        redemption_time_ms: u32,
+        positive_speech_threshold: f32,
+        negative_speech_threshold: f32,
+    ) -> Result<Self> {
         // Silero VAD MUST use 16kHz - this is hardcoded requirement
         const VAD_SAMPLE_RATE: u32 = 16000;
 
@@ -37,11 +57,10 @@ impl ContinuousVadProcessor {
         let mut config = VadConfig::default();
         config.sample_rate = VAD_SAMPLE_RATE as usize;
 
-        // CONTINUOUS SPEECH FIX: Tuned for capturing complete 5+ second utterances
-        // Previous: 0.55/0.40 with 400ms redemption was fragmenting speech into 40ms segments
-        // New: More lenient thresholds + longer redemption for continuous speech
-        config.positive_speech_threshold = 0.50;  // Silero default - good for continuous speech
-        config.negative_speech_threshold = 0.35;  // Silero default - allows natural pauses
+        // Meeting capture favors recall: missed speech cannot be recovered from
+        // the live transcript, while Parakeet can safely discard non-speech.
+        config.positive_speech_threshold = positive_speech_threshold;
+        config.negative_speech_threshold = negative_speech_threshold;
 
         // CRITICAL FIX: Removed redemption_time capping to support long continuous speech
         // Previous: capped at 400ms, causing VAD to fragment 5-second speech into 40ms segments
@@ -411,6 +430,45 @@ where
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    #[ignore = "set LUNA_VAD_REPLAY_AUDIO to a local captured recording"]
+    fn replay_capture_preserves_more_speech_than_legacy_thresholds() {
+        let path = std::env::var("LUNA_VAD_REPLAY_AUDIO")
+            .expect("LUNA_VAD_REPLAY_AUDIO must point to a local audio recording");
+        let decoded = crate::audio::decoder::decode_audio_file(std::path::Path::new(&path))
+            .expect("failed to decode replay audio");
+        let samples = decoded.to_whisper_format();
+
+        let mut legacy = ContinuousVadProcessor::new_with_thresholds(16000, 400, 0.50, 0.35)
+            .expect("legacy VAD initialization failed");
+        let mut legacy_segments = legacy.process_audio(&samples).expect("legacy VAD failed");
+        legacy_segments.extend(legacy.flush().expect("legacy VAD flush failed"));
+
+        let mut tuned = ContinuousVadProcessor::new(16000, 400)
+            .expect("tuned VAD initialization failed");
+        let mut tuned_segments = tuned.process_audio(&samples).expect("tuned VAD failed");
+        tuned_segments.extend(tuned.flush().expect("tuned VAD flush failed"));
+
+        let legacy_ms: f64 = legacy_segments
+            .iter()
+            .map(|segment| segment.end_timestamp_ms - segment.start_timestamp_ms)
+            .sum();
+        let tuned_ms: f64 = tuned_segments
+            .iter()
+            .map(|segment| segment.end_timestamp_ms - segment.start_timestamp_ms)
+            .sum();
+
+        eprintln!(
+            "legacy_segments={} legacy_ms={legacy_ms:.0} tuned_segments={} tuned_ms={tuned_ms:.0}",
+            legacy_segments.len(),
+            tuned_segments.len(),
+        );
+        assert!(
+            tuned_ms > legacy_ms,
+            "tuned live VAD must preserve more audible material than the legacy thresholds"
+        );
+    }
 
     /// Generate synthetic speech-like audio with alternating speech/silence
     fn generate_test_audio_with_speech(duration_seconds: f32, sample_rate: u32) -> Vec<f32> {

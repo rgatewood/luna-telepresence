@@ -37,6 +37,21 @@ export function useRecordingStart(
   const { selectedDevices } = useConfig();
   const { setStatus } = useRecordingState();
 
+  const reconcileAlreadyActiveRecording = useCallback((error: unknown): boolean => {
+    const message = error instanceof Error ? error.message : String(error);
+    if (!message.toLowerCase().includes('recording already in progress')) {
+      return false;
+    }
+
+    // A navigation/start race can reach the backend after another caller has
+    // already started the session. Treat the backend as authoritative instead
+    // of flipping the UI to ERROR and inviting another duplicate start.
+    setIsRecording(true);
+    setIsMeetingActive(true);
+    setStatus(RecordingStatus.RECORDING);
+    return true;
+  }, [setIsMeetingActive, setIsRecording, setStatus]);
+
   // Generate meeting title with timestamp
   const generateMeetingTitle = useCallback(() => {
     const now = new Date();
@@ -81,6 +96,10 @@ export function useRecordingStart(
 
   // Handle manual recording start (from button click)
   const handleRecordingStart = useCallback(async () => {
+    if (isRecording) {
+      return;
+    }
+
     try {
       console.log('handleRecordingStart called - checking Parakeet model status');
 
@@ -135,13 +154,16 @@ export function useRecordingStart(
       await showRecordingNotification();
     } catch (error) {
       console.error('Failed to start recording:', error);
+      if (reconcileAlreadyActiveRecording(error)) {
+        return;
+      }
       setStatus(RecordingStatus.ERROR, error instanceof Error ? error.message : 'Failed to start recording');
       setIsRecording(false); // Reset state on error
       Analytics.trackButtonClick('start_recording_error', 'home_page');
       // Re-throw so RecordingControls can handle device-specific errors
       throw error;
     }
-  }, [generateMeetingTitle, setMeetingTitle, setIsRecording, clearTranscripts, setIsMeetingActive, checkParakeetReady, checkIfModelDownloading, selectedDevices, showModal, setStatus]);
+  }, [isRecording, generateMeetingTitle, setMeetingTitle, setIsRecording, clearTranscripts, setIsMeetingActive, checkParakeetReady, checkIfModelDownloading, selectedDevices, showModal, setStatus, reconcileAlreadyActiveRecording]);
 
   // Check for autoStartRecording flag and start recording automatically
   useEffect(() => {
@@ -204,6 +226,9 @@ export function useRecordingStart(
             await showRecordingNotification();
           } catch (error) {
             console.error('Failed to auto-start recording:', error);
+            if (reconcileAlreadyActiveRecording(error)) {
+              return;
+            }
             setStatus(RecordingStatus.ERROR, error instanceof Error ? error.message : 'Failed to auto-start recording');
             alert('Failed to start recording. Check console for details.');
             Analytics.trackButtonClick('start_recording_error', 'sidebar_auto');
@@ -228,6 +253,7 @@ export function useRecordingStart(
     checkIfModelDownloading,
     showModal,
     setStatus,
+    reconcileAlreadyActiveRecording,
   ]);
 
   // Listen for direct recording trigger from sidebar when already on home page
@@ -291,6 +317,9 @@ export function useRecordingStart(
         await showRecordingNotification();
       } catch (error) {
         console.error('Failed to start recording from sidebar:', error);
+        if (reconcileAlreadyActiveRecording(error)) {
+          return;
+        }
         setStatus(RecordingStatus.ERROR, error instanceof Error ? error.message : 'Failed to start recording from sidebar');
         alert('Failed to start recording. Check console for details.');
         Analytics.trackButtonClick('start_recording_error', 'sidebar_direct');
@@ -317,6 +346,7 @@ export function useRecordingStart(
     checkIfModelDownloading,
     showModal,
     setStatus,
+    reconcileAlreadyActiveRecording,
   ]);
 
   return {

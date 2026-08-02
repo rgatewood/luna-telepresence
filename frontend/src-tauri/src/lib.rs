@@ -409,6 +409,15 @@ pub fn run() {
     }
 
     builder
+        // Persist Rust-side capture and transcription diagnostics. On Windows,
+        // release builds have no console, so env_logger made failures invisible.
+        .plugin(
+            tauri_plugin_log::Builder::new()
+                .level(log::LevelFilter::Info)
+                .max_file_size(10_000_000)
+                .rotation_strategy(tauri_plugin_log::RotationStrategy::KeepAll)
+                .build(),
+        )
         .plugin(tauri_plugin_notification::init())
         .plugin(tauri_plugin_store::Builder::default().build())
         .plugin(tauri_plugin_dialog::init())
@@ -442,13 +451,19 @@ pub fn run() {
                         &source_directory,
                         &shared_models_dir,
                     ) {
-                        Ok(report) if report.files_reused > 0 => log::info!(
-                            "Reused {} model files ({} bytes) from {} in shared library {}",
-                            report.files_reused,
-                            report.bytes_reused,
-                            source_directory.display(),
-                            shared_models_dir.display()
-                        ),
+                        Ok(report)
+                            if report.files_reused > 0 || report.files_deduplicated > 0 =>
+                        {
+                            log::info!(
+                                "Reused {} model files ({} bytes) and deduplicated {} compatibility files ({} bytes) from {} in shared library {}",
+                                report.files_reused,
+                                report.bytes_reused,
+                                report.files_deduplicated,
+                                report.bytes_deduplicated,
+                                source_directory.display(),
+                                shared_models_dir.display()
+                            )
+                        }
                         Ok(_) => {}
                         Err(error) => log::warn!(
                             "Could not reuse model cache from {}: {}",
